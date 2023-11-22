@@ -31,12 +31,22 @@ void User::AddRoutineSchedule(string schd_name, string start_date, int interval,
 
 	string user_name = this->GetUserName();
 
-	Date date = Date(start_date);
+	vector<Date*> date_list; // 루틴 일정들의 날짜 목록
 
-	/* TODO: count번 interval만큼의 간격으로 일정 생성하는 로직
-	for (int i = 0; i < count; i++) {
-		
-		Schedule* schd = new Schedule(user_name, schd_name, start_date + )
+	// 루틴이 시작되는 날
+	Date* start = new Date(start_date);
+	date_list.push_back(start);
+
+	// 반복 횟수만큼 간격을 적용해 날짜 목록에 추가
+	for (int i = 0; i < count - 1; i++) {
+		start = date_list.back();
+		Date* date = new Date(start->year, start->month, start->day + interval);
+		date->Arrange();
+		date_list.push_back(date);
 	}
-	*/
+
+	// 날짜 목록을 참조해 일정을 생성해 일정 목록에 추가
+	for (int i = 0; i < date_list.size(); i++) {
+		this->user_schd_list.push_back(new Schedule(user_name, schd_name, *date_list[i]));
+	}
 }

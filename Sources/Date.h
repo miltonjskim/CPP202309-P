@@ -13,5 +13,9 @@ public:
 
 	Date();
 
+	Date(int year, int month, int day);
+
 	Date(string schd_date);
+
+	void Arrange(void);
 };
