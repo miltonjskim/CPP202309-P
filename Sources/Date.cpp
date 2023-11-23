@@ -9,6 +9,7 @@ Date::Date() {
 }
 
 // 문자열을 입력받는 생성자
+// 입력 형식 -> yyyy-mm-dd
 Date::Date(string schd_date) {
 
 	string buf = ""; // 문자열 임시 저장 변수
@@ -24,7 +25,7 @@ Date::Date(string schd_date) {
 	}
 	this->year = stoi(buf);
 
-	// 입력 문자열에서 월(year)만 추출해 멤버 변수에 저장
+	// 입력 문자열에서 월(month)만 추출해 멤버 변수에 저장
 	buf = "";
 	while (true) {
 		if (schd_date[0] == '-') {
@@ -54,6 +55,65 @@ Date::Date(int year, int month, int day) {
 	this->year = year;
 	this->month = month;
 	this->day = day;
+}
+
+// Date 클래스 연산자 오버라이딩
+bool Date::operator < (const Date& date) {
+	if (this->year != date.year) {
+		return this->year < date.year;
+	}
+	else {
+		if (this->month != date.month) {
+			return this->month < date.month;
+		}
+		else {
+			if (this->day != date.day) {
+				return this->day < date.day;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+}
+
+bool Date::operator > (const Date& date) {
+	if (this->year != date.year) {
+		return this->year > date.year;
+	}
+	else {
+		if (this->month != date.month) {
+			return this->month > date.month;
+		}
+		else {
+			if (this->day != date.day) {
+				return this->day > date.day;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+}
+
+bool Date::operator == (const Date& date) {
+	if (this->year != date.year) {
+		return false;
+	}
+	else {
+		if (this->month != date.month) {
+			return false;
+		}
+		else {
+			if (this->day != date.day) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+	}
+
 }
 
 // 초과한 날짜를 정리해 다음 연/월로 넘겨주는 함수

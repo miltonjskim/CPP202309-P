@@ -12,4 +12,9 @@ public :
 	Date schd_date; // 일정 날짜
 
 	Schedule(string user, string schd_name, Date schd_date);
+
+	// 비교 연산자 오버라이딩
+	bool operator < (const Schedule& schd);
+	bool operator > (const Schedule& schd);
+	bool operator == (const Schedule& schd);
 };
