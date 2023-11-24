@@ -2,6 +2,10 @@
 
 using namespace std;
 
+User::User() {
+
+}
+
 // 유저 생성자
 User::User(string user_name) {
 
@@ -64,19 +68,26 @@ void User::AddRoutineSchedule(string schd_name, string start_date, int interval,
 void User::AddBatchSchedule(string route) {
 
 	// 경로 route의 파일 읽기
-	ifstream ifs;
+	wifstream ifs;
+	ifs.imbue(locale(locale::empty(), new codecvt_utf8<wchar_t>));
+
 	ifs.open(route);
 
 	// 파일에서 일정 명과 날짜를 읽어와 일정 생성 및 목록에 추가
-	string schd_name;
-	string schd_date;
+	wstring schd_name;
+	wstring schd_date;
 
 	while (!ifs.eof()) {
 		getline(ifs, schd_name);
 		getline(ifs, schd_date);
 
-		Date date(schd_date);
-		Schedule* schedule = new Schedule(this->GetUserName(), schd_name, date);
+		// wstring을 string으로 변환
+		wstring_convert<codecvt_utf8<wchar_t>, wchar_t> converter;
+		string name_utf8 = converter.to_bytes(schd_name);
+		string date_utf8 = converter.to_bytes(schd_date);
+
+		Date date(date_utf8);
+		Schedule* schedule = new Schedule(this->GetUserName(), name_utf8, date);
 		this->user_schd_list.push_back(schedule);
 	}
 }
@@ -84,7 +95,10 @@ void User::AddBatchSchedule(string route) {
 // 일정을 리스트 형태로 출력하는 함수
 void User::PrintScheduleToList(User &user, Date start, Date end) {
 
+	// 일정을 빠른 순으로 정렬
 	user.SortSchedule();
+
+	// start부터 end까지의 날짜에 존재하는 모든 일정을 출력
 	for (int i = 0; i < user.user_schd_list.size(); i++) {
 		if (user.user_schd_list[i]->schd_date > start || user.user_schd_list[i]->schd_date == start) {
 			if (user.user_schd_list[i]->schd_date > end) {
@@ -99,4 +113,16 @@ void User::PrintScheduleToList(User &user, Date start, Date end) {
 			cout << year << "-" << month << "-" << day << " " << schd_name << endl;
 		}
 	}
+}
+
+void User::PrintScheduleToCalendar(User& user, int month) {
+
+	// 일정을 빠른 순으로 정렬
+	user.SortSchedule();
+
+	/*
+	for (int i = 0; i < user.user_schd_list.size(); i++) {
+		if(user.)
+	}
+	*/
 }

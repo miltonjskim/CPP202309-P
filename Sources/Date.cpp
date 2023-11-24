@@ -58,63 +58,30 @@ Date::Date(int year, int month, int day) {
 }
 
 // Date 클래스 연산자 오버라이딩
-bool Date::operator < (const Date& date) {
+bool Date::operator<(const Date& date) const {
 	if (this->year != date.year) {
 		return this->year < date.year;
 	}
-	else {
-		if (this->month != date.month) {
-			return this->month < date.month;
-		}
-		else {
-			if (this->day != date.day) {
-				return this->day < date.day;
-			}
-			else {
-				return false;
-			}
-		}
+	if (this->month != date.month) {
+		return this->month < date.month;
 	}
+	return this->day < date.day;
 }
 
-bool Date::operator > (const Date& date) {
+bool Date::operator>(const Date& date) const {
 	if (this->year != date.year) {
 		return this->year > date.year;
 	}
-	else {
-		if (this->month != date.month) {
-			return this->month > date.month;
-		}
-		else {
-			if (this->day != date.day) {
-				return this->day > date.day;
-			}
-			else {
-				return false;
-			}
-		}
+	if (this->month != date.month) {
+		return this->month > date.month;
 	}
+	return this->day > date.day;
 }
 
-bool Date::operator == (const Date& date) {
-	if (this->year != date.year) {
-		return false;
-	}
-	else {
-		if (this->month != date.month) {
-			return false;
-		}
-		else {
-			if (this->day != date.day) {
-				return false;
-			}
-			else {
-				return true;
-			}
-		}
-	}
-
+bool Date::operator==(const Date& date) const {
+	return this->year == date.year && this->month == date.month && this->day == date.day;
 }
+
 
 // 초과한 날짜를 정리해 다음 연/월로 넘겨주는 함수
 void Date::Arrange() {

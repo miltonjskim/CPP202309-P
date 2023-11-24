@@ -4,6 +4,8 @@
 #include <vector>
 #include <fstream>
 #include <algorithm>
+#include <locale>
+#include <codecvt>
 
 using namespace std;
 
@@ -15,6 +17,7 @@ private:
 public :
 	vector<Schedule*> user_schd_list; // 유저의 일정 목록(포인터)
 
+	User();
 	User(string user_name); // 유저 생성자
 
 	string GetUserName(); // 유저 명을 반환하는 함수
@@ -27,8 +30,16 @@ public :
 	// 파일을 통한 배치 일정 입력 함수
 	void AddBatchSchedule(string route);
 
-	void PrintMySchedule();
-	void PrintMembersSchedule(User &user/*, Group group*/);
+	/* 유저 -> 범위 -> 형태의 순으로 내부 호출하는 형태로 리팩토링할 것임.
+	   (My|Members) -> (Range|Month|Week|Day) -> (List|Calendar) */
+	void PrintMySchedule(); // 나의 일정을 출력하는 함수
+	void PrintMembersSchedule(User &user/*, Group group*/); // 멤버의 일정을 출력하는 함수
+
+	void PrintRangeSchedule(); // 사용자가 지정한 날짜 범위 내 일정을 출력하는 함수
+	void PrintMonthSchedule(); // 특정 달(월)의 일정을 출력하는 함수
+	void PrintWeekSchedule(); // 특정 주의 일정을 출력하는 함수
+	void PrintDaySchedule(); // 특정 일의 일정을 출력하는 함수
+
 	void PrintScheduleToList(User &user, Date start, Date end); // 일정을 리스트 형태로 출력하는 함수
-	void PrintScheduleToCalender(User &user, Date start, Date end);
+	void PrintScheduleToCalendar(User &user, int month); // 일정을 월 단위로 달력 형태로 출력하는 함수
 };

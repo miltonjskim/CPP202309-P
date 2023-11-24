@@ -18,9 +18,9 @@ public:
 	Date(string schd_date); // 문자열을 입력받는 생성자
 
 	// 비교 연산자 오버라이딩
-	bool operator < (const Date& date);
-	bool operator > (const Date& date);
-	bool operator == (const Date& date);
+	bool operator < (const Date& date) const;
+	bool operator > (const Date& date) const;
+	bool operator == (const Date& date) const;
 
 	// 초과한 날짜를 정리해 다음 연/월로 넘겨주는 함수
 	void Arrange(void);
