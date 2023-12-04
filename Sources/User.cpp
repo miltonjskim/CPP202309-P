@@ -92,6 +92,77 @@ void User::AddBatchSchedule(string route) {
 	}
 }
 
+// 사용자가 지정한 날짜 범위 내 일정을 출력하는 함수
+void User::PrintRangeSchedule(User &user) {
+
+	string start;
+	string end;
+	cout << "일정을 표시할 시작일을 입력하세요(yyyy-mm-dd): ";
+	cin >> start;
+	cout << "일정을 표시할 종료일을 입력하세요(yyyy-mm-dd): ";
+	cin >> end;
+
+	Date start_date(start);
+	Date end_date(end);
+
+	cout << "일정을 출력합니다." << endl;
+	user.PrintScheduleToList(user, start_date, end_date);
+}
+
+// 특정 달(월)의 일정을 출력하는 함수
+void User::PrintMonthSchedule(User& user) {
+
+	int month;
+	cout << "일정을 표시할 달을 입력하세요: ";
+	cin >> month;
+
+	int days_in_month;	
+	// month에 해당하는 일 수 설정
+	switch (month) {
+	case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+		days_in_month = 31;
+		break;
+	case 4: case 6: case 9: case 11:
+		days_in_month = 30;
+		break;
+	case 2: // 윤년은 고려하지 않음.
+		days_in_month = 28;
+		break;
+	default:
+		break;
+	}
+
+	Date start_date(2023, month, 1);
+	Date end_date(2023, month, days_in_month);
+
+	user.PrintScheduleToList(user, start_date, end_date);
+}
+
+// 특정 주의 일정을 출력하는 함수
+void User::PrintWeekSchedule(User& user) {
+
+	string day;
+	cout << "일정을 표시할 주의 시작일을 입력하세요(yyyy-mm-dd): ";
+	cin >> day;
+
+	Date start_date(day);
+	Date end_date = start_date + 6;
+
+	user.PrintScheduleToList(user, start_date, end_date);
+}
+
+// 특정 일의 일정을 출력하는 함수
+void User::PrintDaySchedule(User& user) {
+
+	string day;
+	cout << "일정을 표시할 날짜를 입력하세요(yyyy-mm-dd): ";
+	cin >> day;
+
+	Date date(day);
+
+	user.PrintScheduleToList(user, date, date);
+}
+
 // 일정을 리스트 형태로 출력하는 함수
 void User::PrintScheduleToList(User &user, Date start, Date end) {
 

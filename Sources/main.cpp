@@ -107,7 +107,7 @@ int main() {
 					Date end_date(end);
 
 					cout << "일정을 출력합니다." << endl;
-					current_user->PrintScheduleToList(*current_user, start, end);
+					current_user->PrintScheduleToList(*current_user, start_date, end_date);
 
 					break;
 				}

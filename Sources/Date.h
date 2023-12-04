@@ -22,6 +22,8 @@ public:
 	bool operator > (const Date& date) const;
 	bool operator == (const Date& date) const;
 
+	Date operator + (int day_to_add);
+
 	// 초과한 날짜를 정리해 다음 연/월로 넘겨주는 함수
 	void Arrange(void);
 };

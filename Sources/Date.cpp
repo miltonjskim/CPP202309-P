@@ -82,6 +82,15 @@ bool Date::operator==(const Date& date) const {
 	return this->year == date.year && this->month == date.month && this->day == date.day;
 }
 
+Date Date::operator+(int day_to_add) {
+
+	int added_day = this->day + day_to_add;
+	Date added_date(this->year, this->month, added_day);
+	Arrange();
+
+	return added_date;
+}
+
 
 // 초과한 날짜를 정리해 다음 연/월로 넘겨주는 함수
 void Date::Arrange() {

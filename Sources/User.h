@@ -35,10 +35,10 @@ public :
 	void PrintMySchedule(); // 나의 일정을 출력하는 함수
 	void PrintMembersSchedule(User &user/*, Group group*/); // 멤버의 일정을 출력하는 함수
 
-	void PrintRangeSchedule(); // 사용자가 지정한 날짜 범위 내 일정을 출력하는 함수
-	void PrintMonthSchedule(); // 특정 달(월)의 일정을 출력하는 함수
-	void PrintWeekSchedule(); // 특정 주의 일정을 출력하는 함수
-	void PrintDaySchedule(); // 특정 일의 일정을 출력하는 함수
+	void PrintRangeSchedule(User &user); // 사용자가 지정한 날짜 범위 내 일정을 출력하는 함수
+	void PrintMonthSchedule(User &user); // 특정 달(월)의 일정을 출력하는 함수
+	void PrintWeekSchedule(User &user); // 특정 주의 일정을 출력하는 함수
+	void PrintDaySchedule(User &user); // 특정 일의 일정을 출력하는 함수
 
 	void PrintScheduleToList(User &user, Date start, Date end); // 일정을 리스트 형태로 출력하는 함수
 	void PrintScheduleToCalendar(User &user, int month); // 일정을 월 단위로 달력 형태로 출력하는 함수
