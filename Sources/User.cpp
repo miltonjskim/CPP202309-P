@@ -191,9 +191,18 @@ void User::PrintScheduleToCalendar(User& user, int month) {
 	// 일정을 빠른 순으로 정렬
 	user.SortSchedule();
 
-	/*
-	for (int i = 0; i < user.user_schd_list.size(); i++) {
-		if(user.)
+	vector<string> days;
+	days.push_back("SUN");
+	days.push_back("MON");
+	days.push_back("TUE");
+	days.push_back("WED");
+	days.push_back("THU");
+	days.push_back("FRI");
+	days.push_back("SAT");
+
+	for (int i = 0; i < days.size(); i++) {
+		cout << days[i] << "  "; // 공백 2
 	}
-	*/
+	cout << endl;
+	cout << "==============================" << endl; // 30칸
 }

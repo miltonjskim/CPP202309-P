@@ -7,7 +7,9 @@ int main() {
 
 	string input; // 입력된 명령어를 저장
 	User* current_user = nullptr; // 현재 사용중인 유저
+	Group* current_group = nullptr; // 현재 사용중인 유저가 속한 그룹
 	vector<User*> user_list; // 생성된 유저들의 목록
+	vector<Group*> group_list; // 생성된 그룹들의 목록
 
 	while (true) {
 
@@ -21,7 +23,32 @@ int main() {
 			user_list.push_back(current_user);
 			cout << "사용자가 생성되었습니다. ";
 			cout << current_user->GetUserName() << "님, 환영합니다." << endl;
-			// TODO: 그룹에 가입
+			
+			cout << "그룹에 가입하시겠습니까?(y/n): ";
+			cin >> input;
+			if (input == "y") {
+				string group_name;
+				cout << "가입 또는 생성할 그룹의 이름을 입력하세요: ";
+				cin >> group_name;
+				for (int i = 0; i < group_list.size(); i++) {
+					// 이미 존재하는 그룹이면 가입
+					if (group_list[i]->group_name == group_name) {
+						group_list[i]->member_list.push_back(current_user);
+						cout << "그룹에 가입되었습니다." << endl;
+						current_group = group_list[i];
+						break;
+					}
+					// 존재하지 않는 그룹이면 생성 후 가입
+					if (i == group_list.size() - 1) {
+						group_list.push_back(new Group(group_name));
+						cout << "그룹이 생성되었습니다." << endl;
+						group_list[group_list.size() - 1]->member_list.push_back(current_user);
+						cout << "그룹에 가입되었습니다." << endl;
+						current_group = group_list[group_list.size() - 1];
+						break;
+					}
+				}
+			}
 		}
 
 		// 명령어 입력
@@ -113,6 +140,21 @@ int main() {
 				}
 				else if (option == "멤버") {
 					// TODO: 멤버를 선택하고 그룹에 있는지 체크 후 일정을 보여주는 로직
+					string members_name;
+					cout << "일정을 볼 대상 멤버의 이름을 입력하세요: ";
+					cin >> members_name;
+
+					for (int i = 0; i < current_group->member_list.size(); i++) {
+						// 입력한 멤버가 존재
+						if (current_group->member_list[i]->GetUserName() == members_name) {
+							current_user->PrintMembersSchedule(*current_group->member_list[i]);
+							break;
+						}
+						// 입력한 멤버가 없음
+						if (i == current_group->member_list.size() - 1) {
+							cout << "입력한 멤버가 그룹에 존재하지 않습니다.";
+						}
+					}
 				}
 				else {
 					cout << "잘못된 옵션입니다. 다시 입력해주세요." << endl;
@@ -130,6 +172,20 @@ int main() {
 				// 일치하는 사용자를 찾았다면 사용자 전환
 				if (user_list[i]->GetUserName() == name) {
 					current_user = user_list[i];
+					cout << "사용자가 전환되었습니다!" << endl;
+					// 전환된 사용자가 그룹이 있는지 확인
+					current_group = nullptr;
+					for (int i = 0; i < group_list.size(); i++) {
+						for (int j = 0; j < group_list[i]->member_list.size(); j++) {
+							if (current_user->GetUserName() == group_list[i]->member_list[j]->GetUserName()) {
+								current_group = group_list[i];
+								break;
+							}
+						}
+						if (current_group != nullptr) {
+							break;
+						}
+					}
 					break;
 				}
 				if (i == user_list.size() - 1) {
