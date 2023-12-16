@@ -68,27 +68,50 @@ void User::AddRoutineSchedule(string schd_name, string start_date, int interval,
 void User::AddBatchSchedule(string route) {
 
 	// 경로 route의 파일 읽기
-	wifstream ifs;
-	ifs.imbue(locale(locale::empty(), new codecvt_utf8<wchar_t>));
-
-	ifs.open(route);
+	ifstream is;
+	is.open(route);
 
 	// 파일에서 일정 명과 날짜를 읽어와 일정 생성 및 목록에 추가
-	wstring schd_name;
-	wstring schd_date;
+	string schd_name;
+	string schd_date;
 
-	while (!ifs.eof()) {
-		getline(ifs, schd_name);
-		getline(ifs, schd_date);
+	while (is >> schd_name >> schd_date) {
 
-		// wstring을 string으로 변환
-		wstring_convert<codecvt_utf8<wchar_t>, wchar_t> converter;
-		string name_utf8 = converter.to_bytes(schd_name);
-		string date_utf8 = converter.to_bytes(schd_date);
-
-		Date date(date_utf8);
-		Schedule* schedule = new Schedule(this->GetUserName(), name_utf8, date);
+		Date date(schd_date);
+		Schedule* schedule = new Schedule(this->GetUserName(), schd_name, date);
 		this->user_schd_list.push_back(schedule);
+	}
+}
+
+// 일정을 출력하는 함수
+void User::PrintSchedule(User& user) {
+
+	while (true) {
+
+		string option; // 일정 출력 범위 옵션
+		cout << "범위 옵션을 선택하세요(월|주|일|사용자입력): ";
+		cin >> option;
+
+		if (option == "월") {
+			PrintMonthSchedule(user);
+			break;
+		}
+		else if (option == "주") {
+			PrintWeekSchedule(user);
+			break;
+		}
+		else if (option == "일") {
+			PrintDaySchedule(user);
+			break;
+		}
+		else if (option == "사용자입력") {
+			PrintRangeSchedule(user);
+			break;
+		}
+		else {
+			cout << "잘못된 입력입니다. 다시 입력하세요." << endl;
+			continue;
+		}
 	}
 }
 

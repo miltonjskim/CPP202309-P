@@ -1,3 +1,4 @@
+#pragma once
 #include "Schedule.h"
 #include <iostream>
 #include <string>
@@ -30,10 +31,9 @@ public :
 	// 파일을 통한 배치 일정 입력 함수
 	void AddBatchSchedule(string route);
 
-	/* 유저 -> 범위 -> 형태의 순으로 내부 호출하는 형태로 리팩토링할 것임.
-	   (My|Members) -> (Range|Month|Week|Day) -> (List|Calendar) */
-	void PrintMySchedule(); // 나의 일정을 출력하는 함수
-	void PrintMembersSchedule(User &user/*, Group group*/); // 멤버의 일정을 출력하는 함수
+	/* 유저를 인자로 넘기면, 범위 -> 형태의 순으로 내부 호출
+	   (Range|Month|Week|Day) -> (List|Calendar) */
+	void PrintSchedule(User &user); // 선택한 유저의 일정을 출력하는 함수
 
 	void PrintRangeSchedule(User &user); // 사용자가 지정한 날짜 범위 내 일정을 출력하는 함수
 	void PrintMonthSchedule(User &user); // 특정 달(월)의 일정을 출력하는 함수

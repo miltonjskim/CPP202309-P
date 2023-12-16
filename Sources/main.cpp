@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Group.h"
+#include "User.h"
 
 using namespace std;
 
@@ -123,6 +124,7 @@ int main() {
 				cout << "누구의 일정을 보시겠습니까?(나|멤버): ";
 				cin >> option;
 				if (option == "나") {
+					/*
 					string start;
 					string end;
 					cout << "일정을 표시할 시작일을 입력하세요(yyyy-mm-dd): ";
@@ -135,7 +137,9 @@ int main() {
 
 					cout << "일정을 출력합니다." << endl;
 					current_user->PrintScheduleToList(*current_user, start_date, end_date);
+					*/
 
+					current_user->PrintSchedule(*current_user);
 					break;
 				}
 				else if (option == "멤버") {
@@ -144,15 +148,17 @@ int main() {
 					cout << "일정을 볼 대상 멤버의 이름을 입력하세요: ";
 					cin >> members_name;
 
-					for (int i = 0; i < current_group->member_list.size(); i++) {
-						// 입력한 멤버가 존재
-						if (current_group->member_list[i]->GetUserName() == members_name) {
-							current_user->PrintMembersSchedule(*current_group->member_list[i]);
-							break;
-						}
-						// 입력한 멤버가 없음
-						if (i == current_group->member_list.size() - 1) {
-							cout << "입력한 멤버가 그룹에 존재하지 않습니다.";
+					if (current_group != nullptr) {
+						for (int i = 0; i < current_group->member_list.size(); i++) {
+							// 입력한 멤버가 존재
+							if (current_group->member_list[i]->GetUserName() == members_name) {
+								current_user->PrintSchedule(*current_group->member_list[i]);
+								break;
+							}
+							// 입력한 멤버가 없음
+							if (i == current_group->member_list.size() - 1) {
+								cout << "입력한 멤버가 그룹에 존재하지 않습니다.";
+							}
 						}
 					}
 				}
