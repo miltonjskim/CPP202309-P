@@ -42,7 +42,7 @@ int main() {
 		}
 
 		// 명령어 입력
-		cout << "명령어를 입력하세요(일정추가|일정보기|사용자전환|종료): ";
+		cout << "명령어를 입력하세요(일정추가|일정동참|일정보기|사용자전환|종료): ";
 		cin >> input;
 
 		// 일정 추가
@@ -104,6 +104,40 @@ int main() {
 				else {
 					cout << "잘못된 옵션입니다. 다시 입력해주세요." << endl;
 					continue;
+				}
+			}
+		}
+		// 일정 동참
+		else if (input == "일정동참") {
+			if (current_group == nullptr) {
+				cout << "가입된 그룹이 없습니다!" << endl;
+			}
+			else {
+				string member_name; // 대상 멤버의 이믈
+				cout << "일정에 동참하고 싶은 멤버의 이름을 입력하세요: ";
+				cin >> member_name;
+				for (int i = 0; i < current_group->member_list.size(); i++) {
+					if (current_group->member_list[i]->GetUserName() == member_name) {
+						User* member = current_group->member_list[i];
+						// 일정 날짜 입력
+						string date;
+						cout << "동참하고 싶은 일정의 날짜를 입력하세요(yyyy-mm-dd): ";
+						cin >> date;
+						Date schd_date(date);
+						cout << "해당 날짜의 멤버의 일정은 아래와 같습니다." << endl;
+						member->PrintScheduleToList(*member, schd_date, schd_date);
+						
+						// 일정 이름 입력
+						string schd_name;
+						cout << "동참하고 싶은 일정의 이름을 입력하세요: ";
+						cin >> schd_name;
+						// 일정 동참
+						current_user->JoinShedule(*member, schd_date, schd_name);
+						break;
+					}
+					if (i == current_group->member_list.size() - 1) {
+						cout << "입력한 멤버가 존재하지 않습니다." << endl;
+					}
 				}
 			}
 		}

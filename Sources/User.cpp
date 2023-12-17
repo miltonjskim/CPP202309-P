@@ -231,3 +231,18 @@ void User::PrintScheduleToCalendar(User& user, int month) {
 	cout << endl;
 	cout << "==============================" << endl; // 30칸
 }
+
+// 멤버의 일정을 선택해 내 일정에 추가하는 함수
+void User::JoinShedule(User& member, Date schd_date, string schd_name) {
+
+	for (Schedule* schd : member.user_schd_list) {
+		// 날짜와 이름이 일치하면 일정 목록에 추가
+		if (schd->schd_date == schd_date) {
+			if (schd->schd_name == schd_name) {
+				this->user_schd_list.push_back(schd);
+				cout << "일정이 추가되었습니다!" << endl;
+				break;
+			}
+		}
+	}
+}

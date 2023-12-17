@@ -43,4 +43,6 @@ public :
 
 	void PrintScheduleToList(User &user, Date start, Date end); // 일정을 리스트 형태로 출력하는 함수
 	void PrintScheduleToCalendar(User &user, int month); // 일정을 월 단위로 달력 형태로 출력하는 함수
+
+	void JoinShedule(User& member, Date schd_date, string schd_name); // 멤버의 일정을 선택해 내 일정에 추가하는 함수
 };
