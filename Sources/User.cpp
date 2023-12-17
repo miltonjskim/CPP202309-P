@@ -21,7 +21,9 @@ string User::GetUserName() {
 // 유저의 일정을 빠른 날짜 순으로 정렬하는 함수 
 void User::SortSchedule() {
 
-	sort(this->user_schd_list.begin(), this->user_schd_list.end());
+	sort(this->user_schd_list.begin(), this->user_schd_list.end(), [](Schedule* a, Schedule* b) {
+		return a->schd_date < b->schd_date;
+	});
 }
 
 // 일정을 수동 입력하는 함수

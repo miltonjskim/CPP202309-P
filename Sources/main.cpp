@@ -31,24 +31,13 @@ int main() {
 				string group_name;
 				cout << "가입 또는 생성할 그룹의 이름을 입력하세요: ";
 				cin >> group_name;
-				for (int i = 0; i < group_list.size(); i++) {
-					// 이미 존재하는 그룹이면 가입
-					if (group_list[i]->group_name == group_name) {
-						group_list[i]->member_list.push_back(current_user);
-						cout << "그룹에 가입되었습니다." << endl;
-						current_group = group_list[i];
-						break;
-					}
-					// 존재하지 않는 그룹이면 생성 후 가입
-					if (i == group_list.size() - 1) {
-						group_list.push_back(new Group(group_name));
-						cout << "그룹이 생성되었습니다." << endl;
-						group_list[group_list.size() - 1]->member_list.push_back(current_user);
-						cout << "그룹에 가입되었습니다." << endl;
-						current_group = group_list[group_list.size() - 1];
-						break;
-					}
-				}
+				// 그룹 생성
+				group_list.push_back(new Group(group_name));
+				cout << "그룹이 생성되었습니다." << endl;
+				// 그룹 가입
+				group_list[group_list.size() - 1]->member_list.push_back(current_user);
+				cout << "그룹에 가입되었습니다." << endl;
+				current_group = group_list[group_list.size() - 1];
 			}
 		}
 
@@ -103,6 +92,7 @@ int main() {
 					string route;
 
 					cout << "파일을 통해 일정을 추가합니다." << endl;
+					cout << "주의: txt파일의 인코딩 방식은 ANSI여야 합니다!" << endl;
 					cout << "파일 경로: ";
 					cin >> route;
 
@@ -124,26 +114,15 @@ int main() {
 				cout << "누구의 일정을 보시겠습니까?(나|멤버): ";
 				cin >> option;
 				if (option == "나") {
-					/*
-					string start;
-					string end;
-					cout << "일정을 표시할 시작일을 입력하세요(yyyy-mm-dd): ";
-					cin >> start;
-					cout << "일정을 표시할 종료일을 입력하세요(yyyy-mm-dd): ";
-					cin >> end;
-					 
-					Date start_date(start);
-					Date end_date(end);
 
-					cout << "일정을 출력합니다." << endl;
-					current_user->PrintScheduleToList(*current_user, start_date, end_date);
-					*/
-
+					std::sort(current_user->user_schd_list.begin(), current_user->user_schd_list.end(), [](Schedule* a, Schedule* b) {
+						return a->schd_date < b->schd_date;
+					});
 					current_user->PrintSchedule(*current_user);
 					break;
 				}
 				else if (option == "멤버") {
-					// TODO: 멤버를 선택하고 그룹에 있는지 체크 후 일정을 보여주는 로직
+
 					string members_name;
 					cout << "일정을 볼 대상 멤버의 이름을 입력하세요: ";
 					cin >> members_name;
@@ -157,9 +136,15 @@ int main() {
 							}
 							// 입력한 멤버가 없음
 							if (i == current_group->member_list.size() - 1) {
-								cout << "입력한 멤버가 그룹에 존재하지 않습니다.";
+								cout << "입력한 멤버가 그룹에 존재하지 않습니다." << endl;
+								break;
 							}
 						}
+						break;
+					}
+					else {
+						cout << "현재 소속된 그룹이 없습니다." << endl;
+						continue;
 					}
 				}
 				else {
@@ -194,6 +179,7 @@ int main() {
 					}
 					break;
 				}
+				// 일치하는 사용자가 없는 경우
 				if (i == user_list.size() - 1) {
 					cout << "일치하는 사용자가 없습니다." << endl;
 					string add_user;
@@ -203,7 +189,44 @@ int main() {
 					if (add_user == "y") {
 						current_user = new User(name);
 						user_list.push_back(current_user);
-						// TODO: 그룹에 가입
+						cout << "사용자가 생성되었습니다!" << endl;
+						// 그룹에 가입
+						string group_option;
+						cout << "그룹에 가입하시겠습니까?(y|n): ";
+						cin >> group_option;
+						if (group_option == "y") {
+							string group_name;
+							cout << "가입할 그룹의 이름을 입력하세요: ";
+							cin >> group_name;
+							for (int i = 0; i < group_list.size(); i++) {
+								if (group_list[i]->group_name == group_name) {
+									// 현재 유저를 그룹에 추가
+									group_list[i]->member_list.push_back(current_user);
+									cout << "그룹에 가입되었습니다." << endl;
+									// 현재 그룹을 해당 그룹으로 변경
+									current_group = group_list[i];
+									break;
+								}
+								// 일치하는 그룹이 없는 경우
+								if (i == group_list.size() - 1) {
+									cout << "입력한 그룹이 존재하지 않습니다." << endl;
+									string add_group;
+									cout << "입력한 그룹을 생성하시겠습니까?(y|n): ";
+									// 그룹 생성
+									if (add_group == "y") {
+										group_list.push_back(new Group(group_name));
+										cout << "그룹이 생성되었습니다." << endl;
+										group_list[group_list.size() - 1]->member_list.push_back(current_user);
+										cout << "그룹에 가입되었습니다." << endl;
+										current_group = group_list[group_list.size() - 1];
+									}
+								}
+							}
+							break;
+						}
+						else {
+							break;
+						}
 					}
 				}
 			}

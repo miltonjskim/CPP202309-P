@@ -32,7 +32,8 @@ public :
 	void AddBatchSchedule(string route);
 
 	/* 유저를 인자로 넘기면, 범위 -> 형태의 순으로 내부 호출
-	   (Range|Month|Week|Day) -> (List|Calendar) */
+	   (Range|Month|Week|Day) -> List
+	    Month -> Calender */
 	void PrintSchedule(User &user); // 선택한 유저의 일정을 출력하는 함수
 
 	void PrintRangeSchedule(User &user); // 사용자가 지정한 날짜 범위 내 일정을 출력하는 함수

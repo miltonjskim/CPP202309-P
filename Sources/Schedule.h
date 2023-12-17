@@ -12,6 +12,8 @@ public :
 	string schd_name; // 일정 명
 	Date schd_date; // 일정 날짜
 
+	Schedule();
+
 	Schedule(string user, string schd_name, Date schd_date);
 
 	// 비교 연산자 오버라이딩
