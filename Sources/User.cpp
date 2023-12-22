@@ -90,23 +90,23 @@ void User::PrintSchedule(User& user) {
 
 	while (true) {
 
-		string option; // 일정 출력 범위 옵션
+		string print_option; // 일정 출력 범위 옵션
 		cout << "범위 옵션을 선택하세요(월|주|일|사용자입력): ";
-		cin >> option;
+		cin >> print_option;
 
-		if (option == "월") {
+		if (print_option == "월") {
 			PrintMonthSchedule(user);
 			break;
 		}
-		else if (option == "주") {
+		else if (print_option == "주") {
 			PrintWeekSchedule(user);
 			break;
 		}
-		else if (option == "일") {
+		else if (print_option == "일") {
 			PrintDaySchedule(user);
 			break;
 		}
-		else if (option == "사용자입력") {
+		else if (print_option == "사용자입력") {
 			PrintRangeSchedule(user);
 			break;
 		}

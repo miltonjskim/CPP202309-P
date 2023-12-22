@@ -25,9 +25,10 @@ int main() {
 			cout << "사용자가 생성되었습니다. ";
 			cout << current_user->GetUserName() << "님, 환영합니다." << endl;
 			
+			string group_option;
 			cout << "그룹에 가입하시겠습니까?(y/n): ";
-			cin >> input;
-			if (input == "y") {
+			cin >> group_option;
+			if (group_option == "y") {
 				string group_name;
 				cout << "가입 또는 생성할 그룹의 이름을 입력하세요: ";
 				cin >> group_name;
@@ -42,7 +43,7 @@ int main() {
 		}
 
 		// 명령어 입력
-		cout << "명령어를 입력하세요(일정추가|일정동참|일정보기|사용자전환|종료): ";
+		cout << "명령어를 입력하세요(일정추가|일정동참|일정보기|멤버조회|사용자전환|종료): ";
 		cin >> input;
 
 		// 일정 추가
@@ -113,11 +114,11 @@ int main() {
 				cout << "가입된 그룹이 없습니다!" << endl;
 			}
 			else {
-				string member_name; // 대상 멤버의 이믈
+				string members_name; // 대상 멤버의 이믈
 				cout << "일정에 동참하고 싶은 멤버의 이름을 입력하세요: ";
-				cin >> member_name;
+				cin >> members_name;
 				for (int i = 0; i < current_group->member_list.size(); i++) {
-					if (current_group->member_list[i]->GetUserName() == member_name) {
+					if (current_group->member_list[i]->GetUserName() == members_name) {
 						User* member = current_group->member_list[i];
 						// 일정 날짜 입력
 						string date;
@@ -149,9 +150,6 @@ int main() {
 				cin >> option;
 				if (option == "나") {
 
-					std::sort(current_user->user_schd_list.begin(), current_user->user_schd_list.end(), [](Schedule* a, Schedule* b) {
-						return a->schd_date < b->schd_date;
-					});
 					current_user->PrintSchedule(*current_user);
 					break;
 				}
@@ -188,6 +186,41 @@ int main() {
 			}
 			
 		} 
+		// 멤버 조회
+		else if (input == "멤버조회") {
+			if (current_group == nullptr) {
+				cout << "현재 소속된 그룹이 없습니다." << endl;
+			}
+			else {
+				string date;
+				cout << "일정이 있는 멤버를 조회할 날짜를 입력하세요(yyyy-mm-dd): ";
+				cin >> date;
+				Date schd_date(date);
+
+				cout << date << "에 일정이 있는 멤버를 출력합니다." << endl;
+				vector<string> output_buffer; // 멤버 이름 출력 버퍼
+				// 그룹 내 멤버 탐색
+				for (int i = 0; i < current_group->member_list.size(); i++) {
+					// 멤버의 일정 탐색
+					for (int j = 0; j < current_group->member_list[i]->user_schd_list.size(); j++) {
+						if (current_group->member_list[i]->user_schd_list[j]->schd_date == schd_date) {
+							// 출력 버퍼에 추가
+							output_buffer.push_back(current_group->member_list[i]->GetUserName());
+							break;
+						}
+					}
+				}
+				// 버퍼 출력
+				if (output_buffer.size() < 1) {
+					cout << "일정이 있는 멤버가 없습니다!" << endl;
+				}
+				else {
+					for (int i = 0; i < output_buffer.size(); i++) {
+						cout << output_buffer[i] << endl;
+					}
+				}
+			}
+		}
 		// 사용자 전환
 		else if (input == "사용자전환") {
 			string name;
@@ -226,7 +259,7 @@ int main() {
 						cout << "사용자가 생성되었습니다!" << endl;
 						// 그룹에 가입
 						string group_option;
-						cout << "그룹에 가입하시겠습니까?(y|n): ";
+						cout << "그룹에 가입하시겠습니까?(y/n): ";
 						cin >> group_option;
 						if (group_option == "y") {
 							string group_name;
@@ -245,7 +278,8 @@ int main() {
 								if (i == group_list.size() - 1) {
 									cout << "입력한 그룹이 존재하지 않습니다." << endl;
 									string add_group;
-									cout << "입력한 그룹을 생성하시겠습니까?(y|n): ";
+									cout << "입력한 그룹을 생성하시겠습니까?(y/n): ";
+									cin >> add_group;
 									// 그룹 생성
 									if (add_group == "y") {
 										group_list.push_back(new Group(group_name));
@@ -253,6 +287,7 @@ int main() {
 										group_list[group_list.size() - 1]->member_list.push_back(current_user);
 										cout << "그룹에 가입되었습니다." << endl;
 										current_group = group_list[group_list.size() - 1];
+										break;
 									}
 								}
 							}
